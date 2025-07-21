@@ -38,7 +38,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/demo-app:latest
+        tags: |
+          ${{ secrets.DOCKER_USERNAME }}/demo-app:latest
+          ${{ secrets.DOCKER_USERNAME }}/demo-app:${{ github.sha }}
 
   scan:
     needs: build-push
