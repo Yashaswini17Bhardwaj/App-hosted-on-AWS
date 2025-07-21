@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+meta
+  name: demo-app
+spec:
+  replicas: 2  # Scalability: 2 pods
+  selector:
+    matchLabels:
+      app: demo-app
+  template:
+    meta
+      labels:
+        app: demo-app
+    spec:
+      containers:
+      - name: demo-app
+        image: your-dockerhub-username/demo-app:latest  # Update after pushing
+        ports:
+        - containerPort: 3000
