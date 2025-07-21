@@ -1,6 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
-meta
+meta:
   name: demo-app
 spec:
   replicas: 2  # Scalability: 2 pods
@@ -8,12 +8,18 @@ spec:
     matchLabels:
       app: demo-app
   template:
-    meta
+    meta:
       labels:
         app: demo-app
     spec:
       containers:
       - name: demo-app
-        image: your-dockerhub-username/demo-app:latest  # Update after pushing
+        image: your-dockerhub-username/demo-app:latest  # Updated after pushing
         ports:
         - containerPort: 3000
+        readinessProbe:  # Ensures new pods are healthy before serving
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10

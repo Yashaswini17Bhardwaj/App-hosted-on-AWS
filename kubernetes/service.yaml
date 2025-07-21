@@ -1,12 +1,11 @@
 apiVersion: v1
 kind: Service
-meta
+meta:
   name: demo-app-service
 spec:
-  type: NodePort
+  type: ClusterIP   
   selector:
-    app: demo-app
+    app: demo-app  # Matches pod labels for auto-discovery
   ports:
-    - port: 80
-      targetPort: 3000
-      nodePort: 30080
+    - port: 80       # ALB routes to this
+      targetPort: 3000  # Demo app's container port
