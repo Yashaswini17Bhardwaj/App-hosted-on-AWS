@@ -118,6 +118,7 @@ jobs:
           minimum-approvals: 1
           issue-title: 'Approve Staging Deployment'
           issue-body: 'Approve to deploy to production?'
+          secret: ${{ secrets.PAT_TOKEN }}
 
   notify:
     if: failure()
