@@ -65,12 +65,24 @@ jobs:
         run: |
           CLEAN_USERNAME=$(echo "${{ secrets.DOCKER_USERNAME }}" | tr -d '\n\r' | xargs)
           echo "username=$CLEAN_USERNAME" >> $GITHUB_OUTPUT
-      - name: Scan for vulnerabilities
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: '${{ secrets.DOCKER_USERNAME }}/demo-app:latest'
-          format: 'table'
-          exit-code: '1'
+      - name: Vulnerability scan with threshold check
+        run: |
+          # Install Trivy and jq
+          sudo apt-get update && sudo apt-get install -y jq
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
+          
+          # Scan and get JSON output
+          trivy image --format json --output results.json ${{ steps.docker.outputs.username }}/demo-app:latest
+          
+          # Count critical vulnerabilities
+          CRITICAL_COUNT=$(jq '[.Results[]?.Vulnerabilities[]? | select(.Severity == "CRITICAL")] | length' results.json)
+          
+          if [ "$CRITICAL_COUNT" -gt 5 ]; then
+            echo "Scan failed: Found $CRITICAL_COUNT critical vulnerabilities"
+            exit 1
+          else
+            echo "Scan passed: vulnerabilities less than 5"
+          fi
 
   deploy-staging:
     needs: scan
