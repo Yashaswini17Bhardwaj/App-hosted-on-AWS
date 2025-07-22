@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: demo-app
-        image: your-dockerhub-username/demo-app:latest  # Updated after pushing
+        image: madhavsurajyashaswini298/demo-app:latest  # Updated after pushing
         ports:
         - containerPort: 3000
         readinessProbe:  # Ensures new pods are healthy before serving
