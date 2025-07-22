@@ -89,6 +89,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
       - name: Set up kubectl
         uses: azure/setup-kubectl@v3
       - name: Decode kubeconfig
@@ -110,7 +116,7 @@ jobs:
         with:
           approvers: Yashaswini17Bhardwaj
           minimum-approvals: 1
-          issue-title: 'Approve Production Deployment'
+          issue-title: 'Approve Staging Deployment'
           issue-body: 'Approve to deploy to production?'
 
   notify:
