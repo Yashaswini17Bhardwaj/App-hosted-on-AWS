@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 meta:
   name: demo-app
+  namespace: staging
 spec:
   replicas: 2  # Scalability: 2 pods
   selector:
