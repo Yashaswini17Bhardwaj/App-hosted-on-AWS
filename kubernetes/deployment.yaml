@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
       - name: demo-app
-        image: madhavsurajyashaswini298/demo-app:${IMAGE_TAG}  # Updated after pushing
+        image: madhavsurajyashaswini298/demo-app:latest  # Updated after pushing
+        imagePullPolicy: Always
         ports:
         - containerPort: 3000
         readinessProbe:  # Ensures new pods are healthy before serving
