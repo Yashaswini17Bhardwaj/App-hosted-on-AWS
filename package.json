@@ -1,16 +1,16 @@
 {
   "name": "demo-app",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "node server.js",
     "test": "mocha test.js"
   },
   "dependencies": {
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "mocha": "^9.2.2",
+    "mocha": "^9.0.0",
     "supertest": "^6.1.3"
   }
 }
