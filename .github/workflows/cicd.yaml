@@ -103,10 +103,12 @@ jobs:
         run: |
           export KUBECONFIG=kubeconfig
           kubectl create namespace staging --dry-run=client -o yaml | kubectl apply -f -
-          sed 's/latest/${{ github.sha }}/g' kubernetes/deployment.yaml | kubectl apply -f - -n staging
+          export DOCKER_USERNAME=${{ steps.docker.outputs.username }}
+          export IMAGE_TAG=${{ github.sha }}
+          envsubst < kubernetes/deployment.yaml | kubectl apply -f - -n staging
           kubectl apply -f kubernetes/service.yaml -n staging
           kubectl apply -f kubernetes/ingress.yaml -n staging
-
+      
   manual-approval:
     needs: deploy-staging
     runs-on: ubuntu-latest
