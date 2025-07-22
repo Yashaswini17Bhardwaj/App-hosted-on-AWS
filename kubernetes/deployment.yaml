@@ -27,3 +27,10 @@ spec:
             port: 3000
           initialDelaySeconds: 5
           periodSeconds: 10
+        resources:
+            requests:
+              cpu:    "100m"     # Pod will get at least 100 millicpu (~0.1 CPU)
+              memory: "128Mi"    # Pod will get at least 128 MiB RAM
+            limits:
+              cpu:    "500m"     # Pod can burst up to 0.5 CPU
+              memory: "512Mi" 
