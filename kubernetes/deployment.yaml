@@ -13,6 +13,8 @@ spec:
       labels:
         app: demo-app
     spec:
+      imagePullSecrets:
+      - name: dockerhub-cred 
       containers:
       - name: demo-app
         image: madhavsurajyashaswini298/demo-app:latest  # Updated after pushing
