@@ -38,9 +38,9 @@ jobs:
         with:
           context: .
           push: true
-        tags: |
-          ${{ secrets.DOCKER_USERNAME }}/demo-app:latest
-          ${{ secrets.DOCKER_USERNAME }}/demo-app:${{ github.sha }}
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/demo-app:latest
+            ${{ secrets.DOCKER_USERNAME }}/demo-app:${{ github.sha }}
 
   scan:
     needs: build-push
@@ -77,26 +77,10 @@ jobs:
       - name: Manual Approval
         uses: trstringer/manual-approval@v1
         with:
-          approvers: your-github-username  # Add team members
+          approvers: Yashaswini17Bhardwaj   
           minimum-approvals: 1
           issue-title: 'Approve Production Deployment'
           issue-body: 'Approve to deploy to production?'
-
-  deploy-production:
-    needs: manual-approval
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v3
-      - name: Decode kubeconfig
-        run: echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > kubeconfig
-      - name: Deploy to production
-        run: |
-          export KUBECONFIG=kubeconfig
-          kubectl create namespace production --dry-run=client -o yaml | kubectl apply -f -
-          sed 's/latest/${{ github.sha }}/g' deployment.yaml | kubectl apply -f - -n production
-          kubectl apply -f service.yaml -n production
 
   notify:
     if: failure()
