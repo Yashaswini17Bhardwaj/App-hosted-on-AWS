@@ -1,0 +1,36 @@
+service:
+  type: LoadBalancer
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+
+elasticsearch:
+  hosts:
+    - "elasticsearch-master.logging.svc.cluster.local"
+  port: 9200
+
+# Configure more lenient readiness probe
+readinessProbe:
+  enabled: false
+  initialDelaySeconds: 60      # Wait 60 seconds before first check
+  periodSeconds: 30            # Check every 30 seconds
+  timeoutSeconds: 60           # Allow 30 seconds for response
+  failureThreshold: 10         # Allow 10 failures before marking unhealthy
+  successThreshold: 1
+
+# Increase startup time allowance
+livenessProbe:
+  enabled: false
+  initialDelaySeconds: 120     # Wait 2 minutes before first liveness check
+  periodSeconds: 60
+  timeoutSeconds: 30
+  failureThreshold: 5
+
+# Ensure adequate resources
+resources:
+  requests:
+    cpu: "200m"
+    memory: "512Mi"
+  limits:
+    cpu: "1000m"               # Increased CPU for faster startup
+    memory: "1Gi"
